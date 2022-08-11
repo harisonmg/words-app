@@ -16,6 +16,8 @@
 package com.example.wordsapp
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -75,14 +77,19 @@ class WordAdapter(private val letterId: String, context: Context) :
      */
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
 
-        val item = filteredWords[position]
+        val word = filteredWords[position]
         // Needed to call startActivity
         val context = holder.view.context
 
         // Set the text of the WordViewHolder
-        holder.button.text = item
+        holder.button.text = word
 
+        // set up implicit intent to Google the meaning of a word
+        val queryUrl: Uri = Uri.parse("${DetailActivity.SEARCH_PREFIX}${word}")
+        val intent = Intent(Intent.ACTION_VIEW, queryUrl)
+        holder.button.setOnClickListener { context.startActivity(intent) }
     }
+
     // Setup custom accessibility delegate to set the text read with
     // an accessibility service
     companion object Accessibility : View.AccessibilityDelegate() {
