@@ -18,6 +18,7 @@ class WordListFragment : Fragment() {
     private var _binding: FragmentWordListBinding? = null
     private val binding get() = _binding!!
     private lateinit var recyclerView: RecyclerView
+    private lateinit var letterId: String
 
     /**
      * Provides global access to these variables from anywhere in the app
@@ -27,6 +28,12 @@ class WordListFragment : Fragment() {
     companion object {
         const val LETTER = "letter"
         const val SEARCH_PREFIX = "https://www.google.com/search?q="
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let { letterId = it.getString(LETTER).toString() }
     }
 
     override fun onCreateView(
@@ -47,7 +54,7 @@ class WordListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         // get the letter from the intent extras
-        val letterId = activity?.intent?.extras?.getString(LETTER).toString()
+        val letterId = letterId
 
         // set the layout manager and adapter
         recyclerView.adapter = WordAdapter(letterId, requireContext())
